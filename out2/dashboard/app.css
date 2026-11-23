@@ -30,6 +30,9 @@ sub { font-size: 11px; }
   background: #2e90fa; color: #fff; border-radius: 999px; padding: 2px 9px;
 }
 .tagline { margin: 0; color: #c3cbd8; font-size: 16px; max-width: 640px; }
+.masthead-right { text-align: left; }
+.snap-line { margin: 0 0 6px; font-size: 13px; color: #9aa8bd; }
+.snap-line strong { color: #e6ebf2; font-weight: 700; }
 .model-line {
   margin: 0; padding-bottom: 4px; font-size: 15px; color: #e6ebf2;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;

@@ -96,3 +96,41 @@ Rank 1 kiencx 966.767; rank 2 kevin 966.767; rank 3 nyx77 964.424; rank 10 night
 - `screenshots/1-board.png`, `2-detail.png`, `3-filtered.png`.
 - `out/` (hasil run final) + `out2/` (run determinisme ke-2, byte-identik).
 - Verifikasi: `diagnosis/r9_verify.py` + `diagnosis/r9_explore.py` (model math, pre-build).
+
+## Perbaikan F3 + F2 (fix pass, 23 Nov ~22:00–22:05 WIB)
+
+**Fix builder:** subagent terpisah (berbeda dari builder R9 / Verifier R9). **Model TIDAK DIUBAH** — slope-cap 0,45 (Huber, intercept 3,5644) tetap; angka D1–D12 tidak berubah.
+
+### F3 (HOLD, P9 H2) — tanggal snapshot kini terlihat judge
+- **Masthead (`dashboard/index.html`):** baris snapshot sebagai HTML STATIS di kolom kanan masthead (di atas formula, mengisi slack kolom): "Snapshot **2026-11-14** · Source DefiLlama https://api.llama.fi/protocols, fetched 2026-11-14T01:18:33.201Z" + baris "Model R9 slope-cap 0.45" (`<br>` agar putus bersih, bukan di tengah kata). Teks literal, BUKAN span JS.
+- **Detail view (`dashboard/app.js` `showDetail`):** sub-line mendapat "· Snapshot 2026-11-14" (literal di template string) — karena mode `detail-only` menyembunyikan masthead, tanpa ini tanggal tidak terlihat di screenshot detail.
+- **Verifikasi first-hand:** grep "2026" di teks dossier = **3** (sebelumnya 0); "2026-11-14" = 3 (2 di index.html + 1 di app.js). Ketiga screenshot dilihat langsung: tanggal terlihat di 1-board (masthead), 2-detail (sub-line), 3-filtered (masthead). 14 baris board tetap terbaca penuh di shot 1; detail tetap muat 1200px (comps terlihat).
+- Footer `Snapshot <span id="asOf">` (diisi JS) TIDAK dihapus — app.js tetap mengisinya; duplikasi dengan masthead tidak masalah.
+
+### F2 (non-fatal) — screenshot dipalette-kan, dossier mengecil
+- Palette 256 warna (PIL MEDIANCUT, preseden R8): 1-board 312.795 → 117.564 B; 2-detail 194.646 → 81.243 B; 3-filtered 307.592 → 115.756 B; total 815.033 → **314.563 B**. Teks diverifikasi tetap tajam dari gambar hasil palette (dilihat langsung).
+- Dossier: 1.082.906 → **445.384 B** (teks 24.774 B). Masih 35.165 B di atas R8 (410.219 B) karena screenshot R9 memuat lebih banyak konten (14 baris board vs 11 di R8 + fit section lebih panjang) — varian tanpa dithering ukurannya IDENTIK, jadi 256 warna sudah optimal untuk konten ini; 128 warna tidak dicoba (risiko legibilitas, belum terbukti). Tetap < R6 (728.655 B) dan < 1,5 MiB (headroom 70%).
+
+### Model tidak berubah (bukti)
+- `out/board.json` md5 **3480c7a892ee876f6116f65682afabb7** — IDENTIK sebelum/sesudah fix. `out/data.js` md5 **b2c79c71f54ce1a4a522b272b353a949** — identik. Total $1.839.593.142, top $59.739.038, FARM 176 / THIN 19 / SKIP 3.
+- Determinisme: `diff -r out out2` kosong (2 run byte-identical).
+- `main.ts` / `lib/model.ts` TIDAK disentuh — hanya `dashboard/` (3 file) + `screenshots/` (3 file) + `out/`/`out2/` (hasil render ulang).
+
+### Screenshot — cara ambil (catatan alat)
+- `/opt/meta-chromium/chrome` MENOLAK start ("Hatch WebGL domain policy is required for browser startup") — dipakai build Playwright di `~/.cache/ms-playwright/chromium-1148/chrome-linux/chrome` (headless, `--window-size=1440,1200 --virtual-time-budget=8000 --hide-scrollbars --force-device-scale-factor=1`, URL `file://.../out/dashboard/index.html[?detail=steakhouse-financial|?filter=watchlist]`).
+
+### P13 — gate-verify 7/7 PASS (dijalankan ulang setelah fix)
+```
+GATE VERIFY  out=out
+dashboard_files    PASS   3 files, 24507 B; index.html + .css + .js present; no http(s):// in forbidden places
+board_file         PASS   198 rows, 509857 B; all slugs in snapshot, names/ranks/implied whole+positive
+sorted_by_value    PASS   ranks 1..198 unique; implied non-rising by rank
+coverage           PASS   watchlist 40/40
+farm_steps         PASS   all 198 rows: 3-12 steps, each 20-600 chars trimmed
+screenshots        PASS   3 images, each <=512 KiB, PNG/JPEG whole, long<=1440 short>=800
+dossier_matches    PASS   dossier.json byte-identical to buildDossier rebuild, 445384 B <= 1.5 MiB, text <= 65,536 B
+TOTAL 7/7 PASS — VALID (all 7 gate rows pass)
+```
+Exit 0.
+
+### cycle39 C1–C9 (dijalankan setelah push, hasil di bawah)

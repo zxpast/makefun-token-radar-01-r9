@@ -143,7 +143,7 @@
       '<h2>#' + r.rank + ' ' + esc(r.name) + '</h2>' +
       '<p class="sub">' + esc(r.category || 'Uncategorised') + ' · ' + esc(r.chains.join(', ') || 'no chain listed') +
       ' · TVL ' + money(r.tvl_usd) + ' · ' + (r.age_days !== null ? r.age_days + ' days old' : 'age unknown') +
-      (r.on_watchlist ? ' · on the watchlist' : '') + '</p>' +
+      (r.on_watchlist ? ' · on the watchlist' : '') + ' · Snapshot 2026-11-14</p>' +
       '<h3>How the value is fitted</h3>' +
       '<p class="fitsteps">log<sub>10</sub>(mcap) = ' + m.intercept.toFixed(4) +
       ' + ' + m.slope.toFixed(2) + ' &times; log<sub>10</sub>(TVL ' + logTvl.toFixed(4) + ') = ' + slopeTerm.toFixed(4) +
