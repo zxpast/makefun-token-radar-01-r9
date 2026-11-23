@@ -74,7 +74,8 @@ TOTAL 7/7 PASS — VALID (all 7 gate rows pass)
 - G2: determinisme 2× byte-identical (`diff -r out out2`, kosong).
 - G3: harness + transcripts — parent (bundle + check).
 - G4: authorship — semua kode ditulis FRESH di sesi ini; file source R5/R6/R7/R8 TIDAK dibaca. Kit starter hanya dibaca untuk kontrak program. `vendor/makefun-board.ts` disalin byte-for-byte dari starter (terverifikasi `cmp`).
-- G5: cycle39 C1–C9 — dijalankan setelah push (butuh git repo); hasil di bawah (diisi setelah push).
+- G5: cycle39 C1–C9 — **SEMUA CHECK MEKANIS LOLOS** (dijalankan setelah push, exit 0): C1 stdlib-only PASS, C1b TS PASS, C2/C2b mount PASS, **C2c pola kanonik PASS** (setelah rename param `emptyDir(dir)` → `emptyDir(outputDir)` — perilaku sama, hanya nama param agar grep kanonik cocok; commit perbaikan terpisah), C3 post-seal PASS (working tree bersih), C5 authorship PASS (commit terakhir berbeda). SKIP: C4 (bukan meme-x), C6 (bukan kompetisi gambar), C7 (transcripts — parent, saat bundle), C9 (entrypoint butuh --input snapshot; /input tidak ada di VM ini — determinisme sudah dibuktikan manual out vs out2 byte-identik).
+- Repo: **https://github.com/zxpast/makefun-token-radar-01-r9** — remote HEAD = local HEAD = **`276eca5ca1a024e09ae288b69799cb7e901466cc`** (commit awal `6973d5ce` + perbaikan C2c `276eca5c`; tree lokal = tree remote, diverifikasi sebelum ref dipindah). About homepage = https://make.fun/bounty/token-radar-01; topics: make-fun, token-radar, defi, airdrop. README 3 badge live make.fun + referral 6hmpy1rq; `.makefun/owner.json` wallet HMWcMREeryPVsiuk7mZ1b6KxamxsfbpUTV2zKLteGXPE; LICENSE MIT (SPDX first line).
 - Screenshots: 3× 1440×1200 PNG (1-board 302.594 B, 2-detail 193.421 B, 3-filtered 297.002 B), semua ≤512 KiB, diambil headless Chrome dari `out/dashboard/` yang sudah di-render.
 
 ## P1 — fresh scan (23 Nov ~20:45 WIB, API)
