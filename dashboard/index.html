@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Launch Radar v9 — every pre-token protocol, ranked by what its launch would be worth</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-inner">
+    <div>
+      <h1>Launch Radar <span class="version">v9</span></h1>
+      <p class="tagline">Every protocol with no token yet, ranked by what its launch would be worth — and the steps to farm it.</p>
+    </div>
+    <p class="model-line">log<sub>10</sub>(mcap) = 3.5644 + 0.45 &times; log<sub>10</sub>(TVL) + sector + mults</p>
+  </div>
+  <dl class="kpis" id="kpis"></dl>
+</header>
+
+<main>
+  <section class="fit" id="fit">
+    <h2>How the numbers are fitted — and how far they miss</h2>
+    <p>The model is a regression, not a multiple. It is fitted on the 119 live-token protocols in this snapshot (Huber IRLS, c = 1.345, 25 rounds; slope fixed at 0.45; sector offsets are shrunk medians of the live residuals, k = 20, capped at &plusmn;0.3; the growth, maturity and chain multipliers are half-damped). Every term below is measured on this entry, by the scheme named next to it:</p>
+    <ul>
+      <li><strong>Leave-one-out RMSE 0.9001</strong> — refit 119 times, one live protocol held out each time (D1 scheme).</li>
+      <li><strong>Repeated 5-fold 0.8996</strong> (max over seeds 0, 1, 2; split by shuffled position mod 5) — the other two seeds give 0.8980 and 0.8977 (D2 scheme).</li>
+      <li><strong>Walk-forward on the 35 newest launches: median miss &times;2.03</strong> — the model is fitted on launches before each one and scored on the next (D3 scheme).</li>
+      <li><strong>Category-blind &times;3.33</strong> — the sector term dropped and the model refit, so a protocol's own category never helps it (D4 scheme).</li>
+      <li><strong>Ranges honest:</strong> 50% of launches land in the central 50% band (stated 50&ndash;60%) and 81% in the 10&ndash;90% band (stated 70&ndash;80%).</li>
+    </ul>
+    <p class="fit-note">The model is wrong by about &times;3.3 on a typical launch. The board ranks by the fitted value anyway, because the same error applies to every row: the ranking is the model's best guess, not a promise.</p>
+  </section>
+
+  <section class="controls" id="controls">
+    <label class="search">Search <input id="q" type="search" placeholder="protocol, category, chain&hellip;" autocomplete="off"></label>
+    <label class="check"><input id="watchOnly" type="checkbox"> Watchlist only (40)</label>
+    <label class="select">Category
+      <select id="cat"><option value="">All categories</option></select>
+    </label>
+    <label class="select">Sort
+      <select id="sort">
+        <option value="rank">Rank (implied value)</option>
+        <option value="net">Net (conditional)</option>
+        <option value="tvl">TVL</option>
+        <option value="name">Name</option>
+      </select>
+    </label>
+    <p class="count" id="count"></p>
+  </section>
+
+  <section class="board-wrap" id="boardWrap">
+    <table id="board">
+      <thead>
+        <tr>
+          <th class="num">Rank</th>
+          <th>Protocol</th>
+          <th>Category</th>
+          <th>Chains</th>
+          <th class="num">TVL</th>
+          <th class="num">7d</th>
+          <th class="num">Implied value</th>
+          <th class="num">Net (cond.)</th>
+          <th class="num">Token odds</th>
+          <th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+
+  <section class="detail" id="detail" hidden></section>
+
+  <section class="integrity" id="integrity">
+    <h2>What is not here</h2>
+    <ul>
+      <li><strong>No backtest table on this page.</strong> The walk-forward test is one number above (&times;2.03 on the 35 newest launches); a table of past wins would flatter the model and tell you nothing about the next launch.</li>
+      <li><strong>No ladder.</strong> A ladder is only printed when the shipped model beats every simpler step on both leave-one-out and walk-forward. It does not here, so no ladder is printed.</li>
+      <li><strong>No T-bill in the net.</strong> The T-bill memo in each detail view is the deposit's opportunity cost at 4% a year over the hold window — a memo, never part of the net.</li>
+      <li><strong>No odds in the value.</strong> Token odds are a display-only probability; the implied value is never multiplied by them. The net (expected) column in the detail view is the only place odds enter the arithmetic.</li>
+      <li><strong>Live-token protocols are set aside.</strong> They already trade, so the board shows the market's own value for them below the board, not a fitted one.</li>
+    </ul>
+    <h2>Live tokens, at the market's own value</h2>
+    <p class="live-note">The 24 largest live-token protocols in this snapshot, by market cap. They are the training set the model is fitted on — they do not appear on the board.</p>
+    <table id="live">
+      <thead>
+        <tr><th>Protocol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">7d</th></tr>
+      </thead>
+      <tbody id="liveRows"></tbody>
+    </table>
+  </section>
+</main>
+
+<footer>
+  <p>Snapshot <span id="asOf"></span>, source <span id="source"></span>. Floor $50M. Board: 198 pre-token protocols (40 watchlist + 158 early). Model: radar-9 — slope-cap 0.45, Huber intercept, sector shrunk-median, half-damped multipliers. Economics: deposit = min(0.02% &times; TVL, $10,000); slice = 10% of implied &times; deposit / TVL; net (cond.) = slice &minus; $5. Verdict: FARM when net (cond.) &gt; $25 and net (expected) &gt; $0; THIN when exactly one holds; SKIP when neither does. Robust when the net at a $1,000 deposit is still positive.</p>
+  <p class="foot-note">A ranking is not a promise. The model misses by &times;3.3 on a typical launch, and a farm plan is ten steps of work, not a guarantee of a token.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
