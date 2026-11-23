@@ -134,3 +134,5 @@ TOTAL 7/7 PASS — VALID (all 7 gate rows pass)
 Exit 0.
 
 ### cycle39 C1–C9 (dijalankan setelah push, hasil di bawah)
+- C1 stdlib-only PASS, C1b TS PASS, C2/C2b mount PASS, C2c pola kanonik PASS, C3 post-seal PASS (working tree bersih), C5 authorship PASS (commit terakhir berbeda). SKIP: C4 (bukan meme-x), C6 (bukan kompetisi gambar), C7 (transcripts — parent, saat bundle), C9 (entrypoint butuh --input snapshot; /input tidak ada di VM — determinisme sudah dibuktikan manual out vs out2 byte-identik). Exit 0.
+- Remote HEAD setelah push fix: **8b48b61674e4c4aecf3851881893079bb2737141** (commit lokal 00e7ac1; Git Data API memberi SHA berbeda untuk tree yang sama — pola yang sama seperti R9). **Submit memakai remote HEAD yang dibaca parent saat bundle.**
