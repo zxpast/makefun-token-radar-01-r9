@@ -1,8 +1,10 @@
 # Token Launch Radar — R9
 
-[![make.fun rank](https://make.fun/badge/zxpast/makefun-token-radar-01-r9/rank.svg)](https://make.fun/bounty/token-radar-01)
-[![make.fun reward](https://make.fun/badge/zxpast/makefun-token-radar-01-r9/reward.svg)](https://make.fun/bounty/token-radar-01)
-[![make.fun](https://make.fun/badge/zxpast/makefun-token-radar-01-r9/entries.svg)](https://make.fun/bounty/token-radar-01)
+[![make.fun · token-radar-01](https://make.fun/badge/token-radar-01.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![rank](https://make.fun/badge/token-radar-01/zxpast/makefun-token-radar-01-r9/rank.svg)](https://make.fun/bounty/token-radar-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![reward](https://make.fun/badge/token-radar-01/zxpast/makefun-token-radar-01-r9/reward.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+
+Referral code: 6hmpy1rq
 
 A token launch radar for [token-radar-01](https://make.fun/bounty/token-radar-01): every pre-token protocol, ranked by what its token would be worth **if it launches**.
 
