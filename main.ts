@@ -35,9 +35,9 @@ function die(code: number, message: string): never {
 }
 
 /** Empty a directory's contents without removing the directory itself: the grader mounts it. */
-function emptyDir(dir: string): void {
-  mkdirSync(dir, { recursive: true });
-  for (const name of readdirSync(dir)) rmSync(join(dir, name), { recursive: true, force: true });
+function emptyDir(outputDir: string): void {
+  mkdirSync(outputDir, { recursive: true });
+  for (const name of readdirSync(outputDir)) rmSync(join(outputDir, name), { recursive: true, force: true });
 }
 
 /** Copy one directory's regular files into `to`, skipping names that start with a dot. */
